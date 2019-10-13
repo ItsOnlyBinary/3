@@ -9,6 +9,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -191,6 +192,25 @@ final class CraftIRCListener implements Listener {
         msg.setField("prefix", this.plugin.getPrefix(event.getPlayer()));
         msg.setField("suffix", this.plugin.getSuffix(event.getPlayer()));
         msg.doNotColor("message");
+        msg.post();
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
+        if (this.plugin.isHeld(CraftIRC.HoldType.GAMEMODE)) {
+            return;
+        }
+        final RelayedMessage msg = this.plugin.newMsg(this.plugin.getEndPoint(this.plugin.cMinecraftTag()), null, "gamemode");
+        if (msg == null) {
+            return;
+        }
+        
+        msg.setField("sender", event.getPlayer().getDisplayName());
+        msg.setField("message", event.getNewGameMode().toString());
+        msg.setField("world", event.getPlayer().getWorld().getName());
+        msg.setField("realSender", event.getPlayer().getName());
+        msg.setField("prefix", this.plugin.getPrefix(event.getPlayer()));
+        msg.setField("suffix", this.plugin.getSuffix(event.getPlayer()));
         msg.post();
     }
 }

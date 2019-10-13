@@ -103,6 +103,7 @@ settings:
       command-reply: '%message%'
       say: '[Server] %message%'
       death: '%message%'
+      gamemode: '%sender% has changed to game mode: %message%'
       players-list: 'Online (%playerCount%/%maxPlayers%): %message%'
       players-nobody: 'Nobody is minecrafting right now.'
       achievement: '%sender% earned achievement %green%[%message%]'
@@ -292,6 +293,7 @@ default-attributes:
     generic: true
     death: true
     achievement: true
+    gamemode: true
     mode: false
     notice: false
     
